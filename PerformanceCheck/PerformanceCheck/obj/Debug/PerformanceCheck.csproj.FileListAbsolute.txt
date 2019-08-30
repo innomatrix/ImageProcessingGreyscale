@@ -1,0 +1,5 @@
+C:\Users\v\source\repos\PerformanceCheck\PerformanceCheck\bin\Debug\PerformanceCheck.dll
+C:\Users\v\source\repos\PerformanceCheck\PerformanceCheck\bin\Debug\PerformanceCheck.pdb
+C:\Users\v\source\repos\PerformanceCheck\PerformanceCheck\obj\Debug\PerformanceCheck.csproj.CoreCompileInputs.cache
+C:\Users\v\source\repos\PerformanceCheck\PerformanceCheck\obj\Debug\PerformanceCheck.dll
+C:\Users\v\source\repos\PerformanceCheck\PerformanceCheck\obj\Debug\PerformanceCheck.pdb

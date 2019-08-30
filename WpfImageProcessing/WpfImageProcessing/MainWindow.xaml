@@ -1,0 +1,54 @@
+﻿<Window x:Class="WpfImageProcessing.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfImageProcessing"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="900">
+    <Grid>
+        <Grid>
+
+            <TabControl>
+                <TabItem Header="Image greyscale conversion">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="9*" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+
+                        <Label Name="lblSteps" Content="Please load the image first..." />
+                        <Border BorderThickness="1" BorderBrush="#FF000000">
+                            <Grid ShowGridLines="True" Height="420">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" MaxHeight="390" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGreen">
+                                    <Image Stretch="None" Name="imgPhotoOrginal" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" MaxHeight="390" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightBlue">
+                                    <Image Stretch="None" Name="imgPhotoConverted" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Button Height="23" HorizontalAlignment="Left" Name="btnLoad" VerticalAlignment="Bottom" Width="75"
+                        Grid.Row="9" Click="BtnLoadImage_Click">Load Image</Button>
+                        <CheckBox Name="cbAsync" Grid.Row="9" Margin="90, 0, 0, 4" HorizontalAlignment="Left" VerticalAlignment="Bottom">Enable ASYNC function</CheckBox>
+
+                        <Button Height="23" HorizontalAlignment="Right" Name="btnConvert" VerticalAlignment="Bottom"
+                        Width="150" Grid.Row="10" IsEnabled="False" Click="BtnConvertImage_Click">Convert Image</Button>
+                        <Label Name="lblPerformance"  Grid.Row="9" Margin="0, 0, 200, 0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Total time: " />
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="C# vs C++ performance comparision" />
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>

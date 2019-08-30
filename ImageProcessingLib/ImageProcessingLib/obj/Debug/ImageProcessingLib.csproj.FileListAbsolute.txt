@@ -1,0 +1,5 @@
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\bin\Debug\ImageProcessingLib.dll
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\bin\Debug\ImageProcessingLib.pdb
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.csproj.CoreCompileInputs.cache
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.dll
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.pdb
