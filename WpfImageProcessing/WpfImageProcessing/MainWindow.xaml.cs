@@ -2,11 +2,7 @@
 using Microsoft.Win32;
 using PerformanceCheck;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -20,28 +16,12 @@ namespace WpfImageProcessing
         public MainWindow()
         {
             InitializeComponent();
+
+            //lblPerformance.Content = String.Concat("CPP: ", ImageProcessing.DisplayHelloFromDLL());     // testing C++ connection
         }
 
         private BitmapImage orginalImage;
         private CancellationTokenSource cts = new CancellationTokenSource();
-
-        public BitmapImage ToBitmapImage(Bitmap bitmap)
-        {
-            using (var memory = new MemoryStream())
-            {
-                bitmap.Save(memory, ImageFormat.Bmp);
-                memory.Position = 0;
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-
-                return bitmapImage;
-            }
-        }
 
 
         private void BtnLoadImage_Click(object sender, RoutedEventArgs e)
@@ -66,14 +46,14 @@ namespace WpfImageProcessing
         //TODO: implement
         //- PROGRESS BAR: injecting new Progress<int>(p => pbDownloadProgress.Value = p)
         //- CANCELLATION ACTION: 'Convert' button changes a label("Cancel") and to CLICL is attached a RoutedEventHandler CancelConversion_Click() while TASK in progress
-        private async void BtnConvertImage_Click(object sender, RoutedEventArgs e)
+        private void BtnConvertImage_Click(object sender, RoutedEventArgs e)
         {
             string nano, mili;
             bool isHighResolution;
 
-            OperationsTimer.StartMeasurement();
-
             btnLoad.IsEnabled = false;
+
+            OperationsTimer.StartMeasurement();
 
             var originalImage = (imgPhotoOrginal.Source as BitmapImage);
 
@@ -86,37 +66,33 @@ namespace WpfImageProcessing
                 else
                 {
                     cts.CancelAfter(TimeSpan.FromSeconds(1));
-                    BitmapImage result = await Task.Run(() => {
-                        return originalImage.ToBitmap().ToGrayscale(cts.Token).ToBitmapImage();
-                    });
-                    imgPhotoConverted.Source = result;
+                    //BitmapImage result = await Task.Run(() => {
+                    //    return originalImage.ToBitmap().ToGrayscale(cts.Token).ToBitmapImage();
+                    //});
+                    //imgPhotoConverted.Source = result;
 
                     //<!--!> BELOW is other 'working' implementation using ThreadPool in scenario when TASK(Promise) is returned from diff Thread/Context - it is less elegant(requires a delegation of following tasks into UI SynchronizationContext) but I think it is worth mentioning:
 
-                    //var sc = SynchronizationContext.Current;
+                    var sc = SynchronizationContext.Current;
 
-                    //ThreadPool.QueueUserWorkItem(async delegate
-                    //{
-                    //    // work on ThreadPool
-                    //    var cts = new CancellationTokenSource();
-                    //    BitmapImage result = await ImageProcessing.GreyscaleAsync(orginalImage, cts.Token);
-                    //    result.Freeze();
+                    ThreadPool.QueueUserWorkItem(async delegate
+                    {
+                        // work on ThreadPool
+                        var cts = new CancellationTokenSource();
+                        BitmapImage result = await ImageProcessing.GreyscaleAsync(orginalImage, cts.Token);
+                        result.Freeze();
 
-                    //    sc.Post(delegate
-                    //    {
-                    //        // work on the original context (UI)
-                    //        imgPhotoConverted.Source = result;
-                    //        cts.Cancel();
+                        sc.Post(delegate
+                        {
+                            // work on the original context (UI)
+                            imgPhotoConverted.Source = result;
+                            cts.Cancel();
 
-                    //        // here we finish the performance tests (!sic)
-                    //        string nano, mili;
-                    //        bool isHighResolution;
+                            (nano, mili, isHighResolution) = OperationsTimer.StopMeasurement();
 
-                    //        (nano, mili, isHighResolution) = OperationsTimer.StopMeasurement();
-
-                    //        lblPerformance.Content = String.Concat("Total time: ", String.Concat(nano, " ns | "), String.Concat(mili, " ms | "), String.Concat("HiRes: ", isHighResolution ? "Enabled" : "Disabled"));
-                    //    }, null);
-                    //});
+                            lblPerformance.Content = String.Concat("Total time: ", String.Concat(nano, " ns | "), String.Concat(mili, " ms | "), String.Concat("HiRes: ", isHighResolution ? "Enabled" : "Disabled"));
+                        }, null);
+                    });
 
                 }
             }
@@ -126,17 +102,20 @@ namespace WpfImageProcessing
             }
             finally
             {
-                (nano, mili, isHighResolution) = OperationsTimer.StopMeasurement();
+                if (cbAsync.IsChecked == false) // procedural approach
+                {
+                    (nano, mili, isHighResolution) = OperationsTimer.StopMeasurement();
 
-                lblPerformance.Content = String.Concat("Total time: ", String.Concat(nano, " ns | "), String.Concat(mili, " ms | "), String.Concat("HiRes: ", isHighResolution ? "Enabled" : "Disabled"));
+                    lblPerformance.Content = String.Concat("Total time: ", String.Concat(nano, " ns | "), String.Concat(mili, " ms | "), String.Concat("HiRes: ", isHighResolution ? "Enabled" : "Disabled"));
                 }
 
                 btnLoad.IsEnabled = true;
+            }
         }
 
-        private void CancelConversion_Click(object sender, RoutedEventArgs e)
-        {
-            cts.Cancel();
-        }
+        //public void CancelConversion_Click(object sender, RoutedEventArgs e)
+        //{
+        //    cts.Cancel();
+        //}
     }
 }

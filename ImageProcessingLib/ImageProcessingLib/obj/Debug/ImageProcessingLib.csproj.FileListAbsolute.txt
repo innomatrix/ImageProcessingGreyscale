@@ -3,3 +3,6 @@ C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\bin\Debug\ImagePro
 C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.csproj.CoreCompileInputs.cache
 C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.dll
 C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.pdb
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.Properties.Resources.resources
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.csproj.GenerateResource.cache
+C:\Users\v\source\repos\ImageProcessingLib\ImageProcessingLib\obj\Debug\ImageProcessingLib.csprojAssemblyReference.cache
